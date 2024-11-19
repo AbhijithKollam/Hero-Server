@@ -12,9 +12,7 @@ Serves both the hero website and hero-admin website
 
 ---
 
-## Work flow
-
-### Steps to run code locally
+## Steps to run code locally
 
 1. Clone the repository:
    git clone  https://github.com/AbhijithKollam/Hero-Server.git
