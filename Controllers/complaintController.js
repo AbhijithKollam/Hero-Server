@@ -59,14 +59,45 @@ exports.getUserCmp = async (req, res) => {
     }
 }
 exports.getAllCmp = async (req, res) => {
+    const key = req.query.key
+    // Set `isKeyProvided` to true if `key` is not empty, false otherwise
+    const isKeyProvided = key && key.trim() !== "";
+
+    console.log(isKeyProvided);
     const pendingCmp = await complaints.find({ status: "Pending" })
     const progressCmp = await complaints.find({ status: "InProgress" })
     const completedCmp = await complaints.find({ status: "Completed" })
-    res.status(200).json({
-        pending: pendingCmp,
-        progress: progressCmp,
-        completed: completedCmp,
-    })
+    if (key == " ") {
+
+        res.status(200).json({
+            pending: pendingCmp,
+            progress: progressCmp,
+            completed: completedCmp,
+        })
+    } else {
+
+        // Filter the pendingCmp array to include only objects where name or email starts with the key
+        const filteredPendingCmp = pendingCmp.filter(complaint =>
+            complaint.name.toLowerCase().startsWith(key.toLowerCase()) ||
+            complaint.email.toLowerCase().startsWith(key.toLowerCase())
+        );
+        // Filter the pendingCmp array to include only objects where name or email starts with the key
+        const filteredProgressCmp = progressCmp.filter(complaint =>
+            complaint.name.toLowerCase().startsWith(key.toLowerCase()) ||
+            complaint.email.toLowerCase().startsWith(key.toLowerCase())
+        );
+        // Filter the pendingCmp array to include only objects where name or email starts with the key
+        const filteredCompletedCmp = completedCmp.filter(complaint =>
+            complaint.name.toLowerCase().startsWith(key.toLowerCase()) ||
+            complaint.email.toLowerCase().startsWith(key.toLowerCase())
+        );
+        res.status(200).json({
+            pending: filteredPendingCmp,
+            progress: filteredProgressCmp,
+            completed: filteredCompletedCmp,
+        })
+    }
+
 
 }
 exports.statusChange = async (req, res) => {
@@ -112,10 +143,10 @@ const sendEmail = async (toEmail, subject, text) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'abhijithspatharam05@gmail.com',
-      pass: 'smcl vqhx ofyk nycl',
+        user: 'abhijithspatharam05@gmail.com',
+        pass: 'smcl vqhx ofyk nycl',
     },
     tls: {
         rejectUnauthorized: false,  // If you're using a self-signed cert or unusual network setup
-      }
-  });
+    }
+});
