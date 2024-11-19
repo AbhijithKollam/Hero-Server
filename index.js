@@ -5,9 +5,16 @@ const express = require('express');
 
 require('./DB/connection') 
 
-const cors= require('cors')
+const cors = require('cors');
+
+const corsOptions = {
+  origin: ['https://hero-admin-2.vercel.app', 'https://hero-user.vercel.app'],
+  methods: 'GET,POST,PUT,DELETE',          
+  allowedHeaders: 'Content-Type,Authorization', 
+};
+
 const superman = express();
-superman.use(cors());
+superman.use(cors(corsOptions));
 superman.use(express.json());
 superman.use(router)   ;
 
