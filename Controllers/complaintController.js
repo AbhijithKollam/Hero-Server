@@ -25,9 +25,9 @@ exports.sendComplaint = async (req, res) => {
             await newComplaint.save()
             const adminUsers = await users.find({ role: "admin" })
             const adminEmails = adminUsers.map(user => user.email);
-            adminEmails.forEach((email) => {
+            adminEmails.forEach((aEmail) => {
                 sendEmail(
-                    email,
+                    aEmail,
                     'Alert!!! : from Hero Website',
                     `A New Complaint Activated from ${name}, ${email} : ${complaint}`
                 );
